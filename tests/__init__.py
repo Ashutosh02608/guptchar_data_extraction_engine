@@ -1,0 +1,3 @@
+"""
+Guptchar test suite.
+"""

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guptchar Core Data Extraction Engine | V1.0</title>
+  <meta name="description"
+    content="High-precision lead generation, website enrichment, and SEC EDGAR regulatory data extraction engine.">
+  <meta name="author" content="Ashutosh">
+  <!-- Guptchar Core Intelligence Engine | Architecture & Implementation by Ashutosh -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="app.css">
+</head>
+
+<body>
+  <div class="app-layout">
+    <!-- Top Header -->
+    <header class="top-nav">
+      <div class="brand-group">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">GUPTCHAR</h1>
+          <p class="brand-subtitle">Core Intelligence & Regulatory Extraction Engine (V1.0)</p>
+        </div>
+      </div>
+      <div class="nav-badges">
+        <span class="badge badge-accent">SEC EDGAR LIVE</span>
+        <span class="badge badge-stealth">STEALTH TLS ENGINE</span>
+        <span class="badge badge-cost">ZERO-COST STACK</span>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+      <!-- Search & Configuration Section -->
+      <section class="config-card glass-panel">
+        <div class="panel-header">
+          <h2>Extraction Parameters</h2>
+          <div class="preset-group">
+            <span class="preset-label">Quick Presets:</span>
+            <button type="button" class="preset-btn"
+              onclick="applyPreset('United States', 'New York', 'Hedge Funds')">Hedge Funds (NYC)</button>
+            <button type="button" class="preset-btn"
+              onclick="applyPreset('United States', 'Chicago', 'Private Equity')">Private Equity (Chicago)</button>
+            <button type="button" class="preset-btn"
+              onclick="applyPreset('United States', 'Boston', 'Financial Compliance')">Compliance (Boston)</button>
+          </div>
+        </div>
+
+        <form id="extract-form" class="form-grid">
+          <div class="form-field">
+            <label for="country">Country</label>
+            <input type="text" id="country" name="country" value="United States" required>
+          </div>
+
+          <div class="form-field">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" value="New York" required placeholder="e.g. New York">
+          </div>
+
+          <div class="form-field">
+            <label for="sector_keyword">Sector / Keyword</label>
+            <input type="text" id="sector_keyword" name="sector_keyword" value="Hedge Funds" required
+              placeholder="e.g. Hedge Funds, Financial Compliance">
+          </div>
+
+          <div class="form-field form-field-sm">
+            <label for="limit">Lead Limit</label>
+            <input type="number" id="limit" name="limit" value="3" min="1" max="25">
+          </div>
+
+          <div class="form-field-checkboxes">
+            <label class="checkbox-label">
+              <input type="checkbox" id="export_json" checked>
+              <span>Export JSON (.json)</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="export_pdf" checked>
+              <span>Export PDF Dossier (.pdf)</span>
+            </label>
+          </div>
+
+          <div class="form-field-action">
+            <button type="submit" id="submit-btn" class="btn-primary">
+              <span class="btn-text">Execute Extraction Pipeline</span>
+              <div class="btn-spinner" style="display: none;"></div>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Multi-Stage Pipeline Tracker -->
+      <section class="pipeline-tracker glass-panel">
+        <div class="stage-item" id="stage-a-status">
+          <div class="stage-num">A</div>
+          <div class="stage-info">
+            <h3>Stage 1: Google Maps</h3>
+            <p>Local entity discovery, gatekeeper phone, official website</p>
+          </div>
+          <div class="stage-indicator">STANDBY</div>
+        </div>
+
+        <div class="stage-arrow">➔</div>
+
+        <div class="stage-item" id="stage-b-status">
+          <div class="stage-num">B</div>
+          <div class="stage-info">
+            <h3>Stage 2: Website Enrichment</h3>
+            <p>TLS chrome stealth, corporate email, leadership team crawl</p>
+          </div>
+          <div class="stage-indicator">STANDBY</div>
+        </div>
+
+        <div class="stage-arrow">➔</div>
+
+        <div class="stage-item" id="stage-c-status">
+          <div class="stage-num">C</div>
+          <div class="stage-info">
+            <h3>Stage 3: Regulatory Look-up</h3>
+            <p>SEC EDGAR REST filings, Form ADV/D C-suite executive parser</p>
+          </div>
+          <div class="stage-indicator">STANDBY</div>
+        </div>
+      </section>
+
+      <!-- Results Section (ASHU SH)-->
+      <section id="results-container" class="results-container" style="display: none;">
+        <!-- Results Header Banner -->
+        <div class="results-header-card glass-panel">
+          <div>
+            <h2 id="results-headline">Extracted Intelligence Dossier</h2>
+            <p id="results-submeta">Entities resolved: 0 | Execution duration: 0s</p>
+          </div>
+          <div class="downloads-group">
+            <a id="download-json-btn" href="#" class="btn-download" target="_blank" style="display: none;">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+              </svg>
+              Download JSON
+            </a>
+            <a id="download-pdf-btn" href="#" class="btn-download btn-download-pdf" target="_blank"
+              style="display: none;">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+                <polyline points="10 9 9 9 8 9" />
+              </svg>
+              Download Formatted PDF
+            </a>
+          </div>
+        </div>
+
+        <!-- Lead Cards View -->
+        <div id="leads-cards-list" class="leads-grid"></div>
+
+        <!-- Raw JSON Preview Accordion -->
+        <div class="raw-json-panel glass-panel">
+          <div class="raw-json-header">
+            <h3>Standard JSON Schema Preview</h3>
+            <button type="button" class="btn-copy" onclick="copyJsonOutput()">Copy JSON</button>
+          </div>
+          <pre id="json-code-viewer"><code>// Extracted data will appear here in standardized schema format</code></pre>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Guptchar Core Data Extraction Engine V1.0 &bull; Open-Source &bull; SEC EDGAR Compliant</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
