@@ -6,7 +6,7 @@ Provides RESTful endpoints for extraction jobs, file downloads, and an interacti
 import os
 from typing import Dict, Optional
 
-from fastapi import FastAPI, HTTPException, Query, status
+from fastapi import FastAPI, HTTPException, Query, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -37,6 +37,7 @@ STATIC_DIR = PUBLIC_DIR if os.path.exists(PUBLIC_DIR) else os.path.join(os.path.
 
 @app.get("/api/v1/health")
 @app.get("/v1/health")
+@app.get("/health")
 async def health_check():
     """Health check endpoint."""
     return {
@@ -46,8 +47,20 @@ async def health_check():
     }
 
 
+@app.api_route("/api/debug", methods=["GET", "POST"])
+@app.api_route("/debug", methods=["GET", "POST"])
+async def debug_endpoint(request: Request):
+    """Debug route to inspect incoming paths in serverless deployments."""
+    return {
+        "url": str(request.url),
+        "path": request.url.path,
+        "method": request.method,
+    }
+
+
 @app.post("/api/v1/extract")
 @app.post("/v1/extract")
+@app.post("/extract")
 async def extract_leads(payload: SearchInput):
     """
     Trigger end-to-end extraction pipeline:
