@@ -31,7 +31,8 @@ app.add_middleware(
 )
 
 pipeline_instance = GuptcharPipeline(headless=True)
-STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
+PUBLIC_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "public")
+STATIC_DIR = PUBLIC_DIR if os.path.exists(PUBLIC_DIR) else os.path.join(os.path.dirname(__file__), "static")
 
 
 @app.get("/api/v1/health")
