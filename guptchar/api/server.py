@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
+from guptchar.config import OUTPUT_DIR
 from guptchar.models import SearchInput
 from guptchar.pipeline import GuptcharPipeline
 
@@ -89,7 +90,9 @@ async def download_json(filename: str):
     """Download generated JSON result file."""
     # Sanitize filename
     clean_filename = os.path.basename(filename)
-    file_path = os.path.abspath(clean_filename)
+    file_path = os.path.join(OUTPUT_DIR, clean_filename)
+    if not os.path.exists(file_path):
+        file_path = os.path.abspath(clean_filename)
 
     if not os.path.exists(file_path) or not clean_filename.endswith(".json"):
         raise HTTPException(status_code=404, detail="JSON export file not found.")
@@ -106,7 +109,9 @@ async def download_pdf(filename: str):
     """Download generated PDF dossier file."""
     # Sanitize filename
     clean_filename = os.path.basename(filename)
-    file_path = os.path.abspath(clean_filename)
+    file_path = os.path.join(OUTPUT_DIR, clean_filename)
+    if not os.path.exists(file_path):
+        file_path = os.path.abspath(clean_filename)
 
     if not os.path.exists(file_path) or not clean_filename.endswith(".pdf"):
         raise HTTPException(status_code=404, detail="PDF dossier file not found.")

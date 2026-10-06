@@ -10,13 +10,16 @@ import os
 import re
 from typing import List
 
+from guptchar.config import OUTPUT_DIR
 from guptchar.models import CompanyLead
 
 logger = logging.getLogger("guptchar.exporters.json")
 
 
-def generate_json_filename(city: str, output_dir: str = ".") -> str:
+def generate_json_filename(city: str, output_dir: str = None) -> str:
     """Generate filename adhering to: guptchar_output_[city]_[timestamp].json."""
+    if output_dir is None:
+        output_dir = OUTPUT_DIR
     clean_city = re.sub(r"[^a-zA-Z0-9_-]", "_", city.lower().strip())
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"guptchar_output_{clean_city}_{timestamp}.json"
