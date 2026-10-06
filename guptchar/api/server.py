@@ -36,6 +36,7 @@ STATIC_DIR = PUBLIC_DIR if os.path.exists(PUBLIC_DIR) else os.path.join(os.path.
 
 
 @app.get("/api/v1/health")
+@app.get("/v1/health")
 async def health_check():
     """Health check endpoint."""
     return {
@@ -46,6 +47,7 @@ async def health_check():
 
 
 @app.post("/api/v1/extract")
+@app.post("/v1/extract")
 async def extract_leads(payload: SearchInput):
     """
     Trigger end-to-end extraction pipeline:
@@ -87,6 +89,7 @@ async def extract_leads(payload: SearchInput):
 
 
 @app.get("/api/v1/download/json/{filename}")
+@app.get("/v1/download/json/{filename}")
 async def download_json(filename: str):
     """Download generated JSON result file."""
     # Sanitize filename
@@ -106,6 +109,7 @@ async def download_json(filename: str):
 
 
 @app.get("/api/v1/download/pdf/{filename}")
+@app.get("/v1/download/pdf/{filename}")
 async def download_pdf(filename: str):
     """Download generated PDF dossier file."""
     # Sanitize filename
