@@ -4,6 +4,7 @@ Extracts business profiles, generic/gatekeeper contact numbers, physical address
 """
 
 import logging
+import os
 import time
 import urllib.parse
 from typing import List, Optional
@@ -38,6 +39,15 @@ class GoogleMapsScraper:
         options.add_argument("--window-size=1920,1080")
         options.add_argument("--disable-blink-features=AutomationControlled")
         options.add_argument(f"user-agent={DEFAULT_USER_AGENT}")
+
+        # Check for custom/system Chromium binary in Linux/Docker environments
+        chrome_bin = os.getenv("CHROME_BIN") or os.getenv("GOOGLE_CHROME_BIN")
+        if chrome_bin and os.path.exists(chrome_bin):
+            options.binary_location = chrome_bin
+        elif os.path.exists("/usr/bin/chromium"):
+            options.binary_location = "/usr/bin/chromium"
+        elif os.path.exists("/usr/bin/chromium-browser"):
+            options.binary_location = "/usr/bin/chromium-browser"
 
         driver = webdriver.Chrome(options=options)
         # Mask automation flag

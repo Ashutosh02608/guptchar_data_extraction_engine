@@ -6,12 +6,11 @@ Provides RESTful endpoints for extraction jobs, file downloads, and an interacti
 import os
 from typing import Dict, Optional
 
-from fastapi import FastAPI, HTTPException, Query, Request, status
+from fastapi import FastAPI, HTTPException, Query, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from guptchar.config import OUTPUT_DIR
 from guptchar.models import SearchInput
 from guptchar.pipeline import GuptcharPipeline
 
@@ -31,13 +30,10 @@ app.add_middleware(
 )
 
 pipeline_instance = GuptcharPipeline(headless=True)
-PUBLIC_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "public")
-STATIC_DIR = PUBLIC_DIR if os.path.exists(PUBLIC_DIR) else os.path.join(os.path.dirname(__file__), "static")
+STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 
 
 @app.get("/api/v1/health")
-@app.get("/v1/health")
-@app.get("/health")
 async def health_check():
     """Health check endpoint."""
     return {
@@ -47,20 +43,7 @@ async def health_check():
     }
 
 
-@app.api_route("/api/debug", methods=["GET", "POST"])
-@app.api_route("/debug", methods=["GET", "POST"])
-async def debug_endpoint(request: Request):
-    """Debug route to inspect incoming paths in serverless deployments."""
-    return {
-        "url": str(request.url),
-        "path": request.url.path,
-        "method": request.method,
-    }
-
-
 @app.post("/api/v1/extract")
-@app.post("/v1/extract")
-@app.post("/extract")
 async def extract_leads(payload: SearchInput):
     """
     Trigger end-to-end extraction pipeline:
@@ -102,14 +85,11 @@ async def extract_leads(payload: SearchInput):
 
 
 @app.get("/api/v1/download/json/{filename}")
-@app.get("/v1/download/json/{filename}")
 async def download_json(filename: str):
     """Download generated JSON result file."""
     # Sanitize filename
     clean_filename = os.path.basename(filename)
-    file_path = os.path.join(OUTPUT_DIR, clean_filename)
-    if not os.path.exists(file_path):
-        file_path = os.path.abspath(clean_filename)
+    file_path = os.path.abspath(clean_filename)
 
     if not os.path.exists(file_path) or not clean_filename.endswith(".json"):
         raise HTTPException(status_code=404, detail="JSON export file not found.")
@@ -122,14 +102,11 @@ async def download_json(filename: str):
 
 
 @app.get("/api/v1/download/pdf/{filename}")
-@app.get("/v1/download/pdf/{filename}")
 async def download_pdf(filename: str):
     """Download generated PDF dossier file."""
     # Sanitize filename
     clean_filename = os.path.basename(filename)
-    file_path = os.path.join(OUTPUT_DIR, clean_filename)
-    if not os.path.exists(file_path):
-        file_path = os.path.abspath(clean_filename)
+    file_path = os.path.abspath(clean_filename)
 
     if not os.path.exists(file_path) or not clean_filename.endswith(".pdf"):
         raise HTTPException(status_code=404, detail="PDF dossier file not found.")

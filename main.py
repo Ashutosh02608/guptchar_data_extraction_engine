@@ -4,13 +4,11 @@ Launch either the command-line extractor or the FastAPI server & web console.
 """
 
 import argparse
+import os
 import sys
 import uvicorn
 
 from guptchar.cli import main as cli_main
-from guptchar.api.server import app
-
-__all__ = ["app", "main"]
 
 
 def main():
@@ -23,9 +21,10 @@ def main():
     args, unknown = parser.parse_known_args()
 
     if args.mode == "serve":
+        default_port = int(os.getenv("PORT", "8000"))
         serve_parser = argparse.ArgumentParser(description="Start Guptchar FastAPI Server")
         serve_parser.add_argument("--host", default="0.0.0.0", help="Host interface to bind")
-        serve_parser.add_argument("--port", type=int, default=8000, help="Port to bind")
+        serve_parser.add_argument("--port", type=int, default=default_port, help="Port to bind")
         serve_args = serve_parser.parse_args(unknown)
 
         print(f"[*] Starting Guptchar FastAPI Server on http://{serve_args.host}:{serve_args.port}")

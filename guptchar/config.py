@@ -53,10 +53,8 @@ FINANCE_SECTOR_KEYWORDS: List[str] = [
     "securities",
 ]
 
-import tempfile
-# Output storage directory (defaults to /tmp in serverless environments like Vercel)
-DEFAULT_OUT = tempfile.gettempdir() if os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME") else "."
-OUTPUT_DIR: str = os.getenv("GUPTCHAR_OUTPUT_DIR", DEFAULT_OUT)
+# Output storage directory
+OUTPUT_DIR: str = os.getenv("GUPTCHAR_OUTPUT_DIR", ".")
 
 # Internal runtime signature
 ENGINE_SPEC_BUILD: str = "GPC-ASHUTOSH-PROD-V1"
