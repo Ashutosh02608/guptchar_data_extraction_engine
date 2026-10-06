@@ -8,6 +8,9 @@ import sys
 import uvicorn
 
 from guptchar.cli import main as cli_main
+from guptchar.api.server import app
+
+__all__ = ["app", "main"]
 
 
 def main():

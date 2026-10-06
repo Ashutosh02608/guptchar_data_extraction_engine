@@ -1,24 +1,6 @@
 {
-  "version": 2,
-  "routes": [
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "api/index.py"
-    },
-    {
-      "src": "/docs",
-      "dest": "api/index.py"
-    },
-    {
-      "src": "/openapi.json",
-      "dest": "api/index.py"
-    }
-  ],
   "functions": {
-    "api/index.py": {
+    "main.py": {
       "maxDuration": 60,
       "memory": 1024
     }
